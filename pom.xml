@@ -14,8 +14,11 @@
 
     </properties>
     <modules>
-        <module>service-consumer</module>
-        <module>service-producer</module>
+        <module>service-core</module>
+        <module>service-user</module>
+        <module>service-order</module>
+        <module>service-api-gateway</module>
+
     </modules>
 
     <dependencies>
@@ -60,12 +63,6 @@
         java -jar
         -->
         <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>2.3</version>
-
-            </plugin>
 
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
