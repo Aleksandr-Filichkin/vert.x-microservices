@@ -4,6 +4,7 @@ import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Context;
 import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpServer;
+import io.vertx.core.json.Json;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
 import io.vertx.ext.web.Router;
@@ -33,6 +34,7 @@ public abstract class BaseVerticle extends AbstractVerticle {
         Router router = Router.router(vertx);
         // body handler
         router.route().handler(BodyHandler.create());
+        router.route().failureHandler(ctx -> ctx.response().setStatusCode(500).putHeader("content-type", "application/json").end(Json.encodePrettily(ctx.failure().getMessage())));
         router.get("/status").handler(routingContext -> routingContext.response().putHeader("content-type", "application/json").end("OK"));
         return router;
     }
@@ -63,7 +65,6 @@ public abstract class BaseVerticle extends AbstractVerticle {
         ServerSocket socket = new ServerSocket(0);
         int port = socket.getLocalPort();
         socket.close();
-        System.out.println(port);
         return port;
     }
 

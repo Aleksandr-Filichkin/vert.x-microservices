@@ -9,6 +9,14 @@ public class OrderService {
 
     private Map<Long, Order> orderMap = new ConcurrentHashMap<>();
 
+    public OrderService() {
+        //add one item
+        Order order=new Order();
+        order.setId(1);
+        order.setDescription("ololo");
+        addOrder(order);
+    }
+
     public Order getOrder(long id) {
         return orderMap.get(id);
     }
