@@ -1,6 +1,10 @@
 package com.filichkin.vertx.model;
 
 public class Order {
+    private long id;
+    private long userId;
+    private String description;
+
     public long getId() {
         return id;
     }
@@ -24,9 +28,5 @@ public class Order {
     public void setDescription(String description) {
         this.description = description;
     }
-
-    private long id;
-    private long userId;
-    private String description;
 
 }
