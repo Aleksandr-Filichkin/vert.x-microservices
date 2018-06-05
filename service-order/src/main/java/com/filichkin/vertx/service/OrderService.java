@@ -7,13 +7,14 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class OrderService {
 
-    private Map<Long,Order> orderMap= new ConcurrentHashMap<>();
+    private Map<Long, Order> orderMap = new ConcurrentHashMap<>();
 
-    public Order getOrder(long id){
+    public Order getOrder(long id) {
         return orderMap.get(id);
     }
-    public void addOrder(Order order){
-         orderMap.put(order.getId(),order);
+
+    public void addOrder(Order order) {
+        orderMap.put(order.getId(), order);
     }
 
 }

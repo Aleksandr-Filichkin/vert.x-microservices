@@ -3,13 +3,23 @@ package com.filichkin.vertx;
 import com.filichkin.vertx.handler.HttpRequestHandler;
 import com.filichkin.vertx.service.OrderService;
 import com.filichkin.vertx.verticle.BaseVerticle;
-import io.vertx.core.eventbus.DeliveryOptions;
-import io.vertx.core.eventbus.EventBus;
+import io.vertx.core.logging.Logger;
+import io.vertx.core.logging.LoggerFactory;
 import io.vertx.ext.web.Router;
+import io.vertx.servicediscovery.Record;
+import io.vertx.servicediscovery.ServiceDiscovery;
+import io.vertx.servicediscovery.types.HttpEndpoint;
 
 public class OrderApp extends BaseVerticle {
 
+    private static Logger LOGGER = LoggerFactory.getLogger(OrderApp.class);
     private HttpRequestHandler httpRequestHandler = new HttpRequestHandler(new OrderService());
+
+    @Override
+    protected String getServiceName() {
+        return "order";
+    }
+
 
     @Override
     protected Router buildRouter() {
@@ -22,19 +32,19 @@ public class OrderApp extends BaseVerticle {
     @Override
     public void start() throws Exception {
 
-
-        super.start();
-        EventBus eb = vertx.eventBus();
-        vertx.setPeriodic(11000, v -> {
-            DeliveryOptions deliveryOptions = new DeliveryOptions().setSendTimeout(10000);
-            eb.send("ping-address", "ping!", deliveryOptions, reply -> {
-                if (reply.succeeded()) {
-                    System.out.println("Received reply " + reply.result().body());
-                } else {
-                    System.out.println("No reply");
-                }
-            });
+        // Record creation from a type
+        ServiceDiscovery discovery = ServiceDiscovery.create(vertx);
+        Record record = HttpEndpoint.createRecord("service-" + getServiceName(), "localhost", getPort(), "/api");
+        discovery.publish(record, ar -> {
+            if (ar.succeeded()) {
+                // publication succeeded
+                LOGGER.info("service {0} was registered", getServiceName());
+            } else {
+                // publication failed
+            }
         });
+
+
     }
 
 

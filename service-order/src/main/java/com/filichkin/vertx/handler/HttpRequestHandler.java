@@ -3,9 +3,12 @@ package com.filichkin.vertx.handler;
 import com.filichkin.vertx.model.Order;
 import com.filichkin.vertx.service.OrderService;
 import io.vertx.core.json.Json;
+import io.vertx.core.logging.Logger;
+import io.vertx.core.logging.LoggerFactory;
 import io.vertx.ext.web.RoutingContext;
 
 public class HttpRequestHandler {
+    private static Logger LOGGER = LoggerFactory.getLogger(HttpRequestHandler.class);
     private final OrderService orderService;
 
     public HttpRequestHandler(OrderService orderService) {
